@@ -1,8 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/Home';
-import LoginPage from './pages/Login';
-import RegisterPage from './pages/Register';
 import SymptomCheckerPage from './pages/SymptomChecker';
 import ResultsPage from './pages/Results';
 import DoctorsPage from './pages/Doctors';
@@ -20,10 +18,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen bg-background">
         <Routes>
-          {/* Auth routes */}
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
-          
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path="symptom-checker" element={<SymptomCheckerPage />} />
