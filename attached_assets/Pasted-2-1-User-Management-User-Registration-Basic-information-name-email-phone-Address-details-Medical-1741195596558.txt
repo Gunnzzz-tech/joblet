@@ -1,0 +1,164 @@
+2.1 User Management
+User Registration
+Basic information (name, email, phone)
+Address details
+Medical history
+Profile picture upload
+Password security
+User Authentication
+Login/Logout functionality
+Password recovery
+Email verification
+Session management
+User Profile
+Profile editing
+Medical history management
+Appointment history
+Order history
+Saved doctors
+Favorite products
+2.2 Doctor Management
+Doctor Profiles
+Professional information
+Specializations
+Experience
+Education
+Certifications
+Availability schedule
+Consultation fees
+Patient reviews
+Appointment System
+Appointment booking
+Date and time selection
+Appointment confirmation
+Reminder notifications
+Cancellation/Rescheduling
+Video consultation option
+Doctor Search & Filter
+Search by name/specialization
+Filter by location
+Filter by availability
+Sort by experience/rating
+Distance-based search
+2.3 Product Management
+Product Catalog
+Categories (Herbs, Oils, Supplements, Equipment)
+Product details
+Pricing
+Stock management
+Product images
+Product reviews
+Shopping Features
+Shopping cart
+Wishlist
+Order tracking
+Payment integration
+Order history
+Return/Refund management
+Product Search & Filter
+Search by name/description
+Filter by category
+Filter by price range
+Sort by popularity/price
+Stock availability filter
+2.4 Yoga & Wellness
+Yoga Resources
+Pose library
+Difficulty levels
+Benefits
+Instructions
+Video demonstrations
+Custom routines
+Wellness Content
+Articles
+Blogs
+Health tips
+Diet plans
+Lifestyle advice
+Seasonal recommendations
+Interactive Features
+Progress tracking
+Custom routines
+Save favorite poses
+Share content
+Community forums
+2.5 Location Services
+Nearby Search
+Find nearby doctors
+Find nearby stores
+Distance calculation
+Map integration
+Location-based recommendations
+Address Management
+Multiple addresses
+Address verification
+Delivery preferences
+Location history
+3. Technical Requirements
+3.1 Frontend
+Framework & Libraries
+Next.js
+React
+TypeScript
+Tailwind CSS
+Material UI/Chakra UI
+State Management
+React Context
+Local Storage
+Session Storage
+Data Management
+3.2 UI/UX Requirements
+Design System
+Color palette
+Typography
+Component library
+Responsive design
+Accessibility standards
+User Interface
+Clean, modern design
+Intuitive navigation
+Mobile-first approach
+Loading states
+Error handling
+Success messages
+Performance
+Fast loading times
+Optimized images
+Lazy loading
+Caching strategy
+Offline support
+4. Development Workflow
+4.1 Project Setup
+Initial Setup
+Project Structure
+4.2 Development Phases
+Phase 1: Core Setup
+Project initialization
+Basic routing
+Component library setup
+Mock data implementation
+Phase 2: User Management
+Registration
+Authentication
+Profile management
+User settings
+Phase 3: Doctor Features
+Doctor profiles
+Appointment system
+Search and filter
+Reviews and ratings
+Phase 4: Product Management
+Product catalog
+Shopping cart
+Order management
+Payment integration
+Phase 5: Yoga & Wellness
+Yoga pose library
+Wellness content
+Interactive features
+Progress tracking
+Phase 6: Location Services
+Map integration
+Nearby search
+Address management
+Location tracking
