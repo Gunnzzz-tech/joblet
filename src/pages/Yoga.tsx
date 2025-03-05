@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { yogaPoses, PoseDifficulty, wellnessArticles, dietPlans } from '../data/yoga';
-import { Search, Filter, Book, Utensils, Yoga as YogaIcon } from 'lucide-react';
+import { Search, Filter, Book, Utensils, Activity as YogaIcon } from 'lucide-react';
 
 export default function YogaPage() {
   const [activeTab, setActiveTab] = useState<'poses' | 'articles' | 'diets'>('poses');

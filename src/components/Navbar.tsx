@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Stethoscope, User, ShoppingBag, Yoga, MapPin, Menu, X } from 'lucide-react';
+import { Home, Stethoscope, User, ShoppingBag, Activity, MapPin, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,7 +31,7 @@ export default function Navbar() {
                 Shop
               </Link>
               <Link to="/yoga" className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-900">
-                <Yoga className="mr-1 h-4 w-4" />
+                <Activity className="mr-1 h-4 w-4" />
                 Yoga & Wellness
               </Link>
               <Link to="/locations" className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-900">
