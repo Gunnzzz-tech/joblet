@@ -1,5 +1,5 @@
 
-import { Leaf } from 'lucide-react'
+import { Flower } from 'lucide-react'
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
-            <Leaf className="h-6 w-6" />
+            <Flower className="h-6 w-6" />
             <span className="ml-2 text-lg font-semibold">Ayur Vaidya Pro</span>
           </div>
           

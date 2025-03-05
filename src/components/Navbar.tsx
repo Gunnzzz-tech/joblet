@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Stethoscope, User, ShoppingBag, MapPin, Lotus, LogIn, UserPlus } from 'lucide-react';
+import { Home, Stethoscope, User, ShoppingBag, MapPin, Flower, LogIn, UserPlus } from 'lucide-react';
 
 export default function Navbar() {
   // Placeholder for auth state
@@ -72,6 +72,7 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none"
             >
+              {/* Assuming Menu and X are imported correctly */}
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
@@ -95,6 +96,7 @@ export default function Navbar() {
               Shop
             </Link>
             <Link to="/yoga" className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">
+              <Flower className="h-5 w-5 mr-2" />
               Yoga & Wellness
             </Link>
             <Link to="/locations" className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">
