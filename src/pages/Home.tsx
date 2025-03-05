@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom'
 import { Stethoscope, Pill, Book, Heart } from 'lucide-react'
 
@@ -26,7 +25,7 @@ export default function HomePage() {
             </div>
             <div className="md:w-1/2 flex justify-center">
               <img 
-                src="https://images.pexels.com/photos/5617166/pexels-photo-5617166.jpeg" 
+                src="/src/images/homeimg.jpg" 
                 alt="Ayurvedic herbs and treatments"
                 className="rounded-lg shadow-lg max-w-full h-auto" 
               />

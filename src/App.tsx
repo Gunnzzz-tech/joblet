@@ -9,6 +9,8 @@ import ShopPage from './pages/Shop';
 import ProductDetailPage from './pages/ProductDetail';
 import YogaPage from './pages/Yoga';
 import LocationsPage from './pages/Locations';
+import LoginPage from './pages/Login';
+import RegisterPage from './pages/Register';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
@@ -36,6 +38,10 @@ function App() {
 
             {/* Location services routes */}
             <Route path="locations" element={<LocationsPage />} />
+
+            {/* Authentication routes */}
+            <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
           </Route>
         </Routes>
       </div>
