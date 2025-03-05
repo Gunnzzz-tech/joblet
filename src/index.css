@@ -15,7 +15,7 @@
 
 @layer base {
   body {
-    @apply text-gray-900 bg-background-DEFAULT;
+    @apply text-gray-900 bg-background;
   }
 }
 
