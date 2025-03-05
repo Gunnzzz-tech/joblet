@@ -34,7 +34,7 @@ export default function Navbar() {
                 Shop
               </Link>
               <Link to="/yoga" className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-900">
-                <Lotus className="mr-1 h-4 w-4" />
+                <Flower className="mr-1 h-4 w-4" />
                 Yoga
               </Link>
               <Link to="/locations" className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-900">
