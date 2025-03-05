@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/Home';
 import SymptomCheckerPage from './pages/SymptomChecker';
@@ -16,7 +16,7 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Router>
+      <div className="min-h-screen bg-background">
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
@@ -38,7 +38,7 @@ function App() {
             <Route path="locations" element={<LocationsPage />} />
           </Route>
         </Routes>
-      </Router>
+      </div>
     </QueryClientProvider>
   );
 }
