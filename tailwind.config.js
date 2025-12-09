@@ -9,24 +9,31 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#4a6741", // Ayurvedic green
-          light: "#6a8960",
-          dark: "#324a2d",
+          DEFAULT: "#1A1A1A",
+          light: "#404040",
+          dark: "#000000",
         },
         secondary: {
-          DEFAULT: "#d4a373", // Earthy brown
-          light: "#e9c496",
-          dark: "#b08659",
-        },
-        background: {
-          DEFAULT: "#f9f7f3", // Off-white
-          dark: "#e6e2d9",
+          DEFAULT: "#6B7280",
+          light: "#9CA3AF",
+          dark: "#4B5563",
         },
         accent: {
-          DEFAULT: "#9c6644", // Deep amber
-          light: "#bc8a69",
-          dark: "#7c4e30",
+          DEFAULT: "#3B82F6",
+          light: "#60A5FA",
+          dark: "#2563EB",
         },
+        success: "#22C55E",
+        warning: "#F59E0B",
+        error: "#EF4444",
+        background: {
+          DEFAULT: "#F5F5F5",
+          dark: "#E5E5E5",
+        },
+        card: "#FFFFFF",
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
     },
   },

@@ -1,4 +1,3 @@
-
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
@@ -11,8 +10,15 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0',
-    port: 5000,
-    allowedHosts: ['757c7fb3-f235-4cbc-bafc-2fad289cf279-00-1lhx95wn01af.worf.replit.dev', 'all']
+    port: 5173,
+    host: true,
+    proxy: {
+      '/api/jobs': {
+        target: 'https://joveo-c08b42a8.s3-accelerate.amazonaws.com',
+        changeOrigin: true,
+        rewrite: (path) => '/1afd8eb1.xml',
+        secure: false,
+      }
+    }
   }
 })
