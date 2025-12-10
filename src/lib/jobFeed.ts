@@ -1,5 +1,7 @@
-// Use local Vite proxy instead of external CORS proxies
-const XML_FEED_URL = '/api/jobs';
+// Update the URL based on environment
+const XML_FEED_URL = import.meta.env.PROD 
+  ? 'https://joveo-c08b42a8.s3-accelerate.amazonaws.com/1afd8eb1.xml'  // Direct URL for production
+  : '/api/jobs';  // Proxy for development
 
 export interface XmlJob {
   id: string;
@@ -68,7 +70,8 @@ export class JobFeedService {
 
   static async fetchJobs(): Promise<XmlJob[]> {
     try {
-      console.log('Fetching jobs from XML feed via proxy...');
+      console.log('Fetching jobs from XML feed...');
+      console.log('URL:', XML_FEED_URL);
       
       const response = await fetch(XML_FEED_URL);
       
@@ -104,6 +107,7 @@ export class JobFeedService {
       return jobs;
     } catch (error) {
       console.error('Error fetching XML feed:', error);
+      // Return empty array instead of throwing to prevent UI crash
       return [];
     }
   }

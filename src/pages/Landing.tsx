@@ -6,7 +6,7 @@ import AuthModal from '../components/AuthModal';
 import { useAuth } from '../lib/auth-context';
 import { motion } from 'framer-motion';
 import '../styles/rocken.css';
-import SlidingBrands from '/Users/gungunbali/Downloads/ayur job/taskify_ai/src/pages/SlidingBrands.tsx';
+import SlidingBrands from './SlidingBrands';
 
 // Define the type for categorized suggestions
 interface CategoryGroup {
