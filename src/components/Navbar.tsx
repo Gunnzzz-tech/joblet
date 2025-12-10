@@ -31,7 +31,7 @@ export default function Navbar() {
       {/* Logo on the left */}
       <div className="flex items-center">
         <Link to="/" className="flex items-center">
-          <span className="text-primary font-bold text-xl">Taskify</span>
+          <span className="text-primary font-bold text-xl">joblet.ai</span>
         </Link>
       </div>
 

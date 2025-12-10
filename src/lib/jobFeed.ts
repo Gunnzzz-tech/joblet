@@ -1,6 +1,8 @@
 // Update the URL based on environment
-const XML_FEED_URL = 'https://joveo-c08b42a8.s3-accelerate.amazonaws.com/1afd8eb1.xml';  // Proxy for development
-
+const XML_FEED_URL = import.meta.env.VITE_XML_FEED_URL || 
+  (import.meta.env.PROD 
+    ? 'https://joveo-c08b42a8.s3-accelerate.amazonaws.com/1afd8eb1.xml'
+    : '/api/jobs'); 
 export interface XmlJob {
   id: string;
   title: string;

@@ -1,7 +1,7 @@
 import { ChevronLeft } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
-import taskifyImage from '../images/taskifyblack.png';
+import jobletImage from '../images/taskifyblack.png';
 interface SidebarProps {
   workSchedule: string[];
   employmentType: string[];
@@ -21,7 +21,7 @@ export function Sidebar({
       <div 
   className="rounded-2xl p-5 mb-6 relative overflow-hidden h-[220px] flex flex-col justify-end"
   style={{
-    backgroundImage: `url(${taskifyImage})`,
+    backgroundImage: `url(${jobletImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat'
@@ -31,7 +31,7 @@ export function Sidebar({
         <div className="absolute inset-0 bg-black/30 z-0"></div>
         
         <h3 className="text-white text-xl mb-3 relative z-10">
-          Get Your best<br />profession<br />wit Taskify Ai
+          Get Your best<br />profession<br />with joblet Ai
         </h3>
         <button className="bg-blue-400 hover:bg-blue-500 text-white px-5 py-1.5 rounded-full w-fit relative z-10 text-sm">
           Learn more

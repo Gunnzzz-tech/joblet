@@ -9,7 +9,7 @@ export default function Footer() {
     <div className="footer-content">
       <div className="footer-brand">
         <div className="footer-logo">
-          taskify®️
+          joblet.ai®️
         </div>
         <p className="footer-description">
           The leading platform for talent. Connecting skilled workers with meaningful career opportunities.
@@ -54,7 +54,7 @@ export default function Footer() {
     </div>
   
     <div className="footer-bottom">
-      <p>©️ {year} Taskify. All rights reserved.</p>
+      <p>©️ {year} joblet.ai All rights reserved.</p>
       <div className="footer-links">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>

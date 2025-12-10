@@ -68,8 +68,8 @@ export default function ReferAndEarn() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Join Taskify',
-          text: 'Join Taskify and earn money! Use my referral link:',
+          title: 'Join joblet',
+          text: 'Join joblet and earn money! Use my referral link:',
           url: getReferralLink(),
         });
       } catch (error) {
@@ -88,9 +88,9 @@ export default function ReferAndEarn() {
             <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Gift className="w-10 h-10 text-white" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Join Taskify's Referral Rewards</h2>
+            <h2 className="text-2xl font-bold mb-2">Join joblet's Referral Rewards</h2>
             <p className="text-gray-600">
-              Refer your network to join Taskify and <span className="text-blue-600 font-semibold">earn $250-$15,000</span> in bonuses for every successful referral.
+              Refer your network to join joblet and <span className="text-blue-600 font-semibold">earn $250-$15,000</span> in bonuses for every successful referral.
             </p>
           </div>
 
@@ -164,7 +164,7 @@ export default function ReferAndEarn() {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4">Refer & Earn</h1>
           <p className="text-xl text-gray-600">
-            Share Taskify with your network and earn up to <span className="text-blue-600 font-semibold">$15,000</span> per referral!
+            Share joblet with your network and earn up to <span className="text-blue-600 font-semibold">$15,000</span> per referral!
           </p>
         </div>
 
@@ -303,8 +303,8 @@ export default function ReferAndEarn() {
         {/* Contact Support */}
         <div className="text-center mt-8 text-gray-600">
           <p>If you have more questions, you can reach out to us at</p>
-          <a href="mailto:support@taskify.com" className="text-blue-600 font-medium hover:underline">
-            support@taskify.com
+          <a href="mailto:support@joblet.com" className="text-blue-600 font-medium hover:underline">
+            support@joblet.com
           </a>
         </div>
       </div>

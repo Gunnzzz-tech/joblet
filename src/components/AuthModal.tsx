@@ -115,8 +115,8 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
           </h2>
           <p className="text-gray-600 mb-6">
             {mode === 'login'
-              ? 'Sign in to continue to Taskify'
-              : 'Join Taskify to find your dream job or hire talent'}
+              ? 'Sign in to continue to joblet'
+              : 'Join joblet to find your dream job or hire talent'}
           </p>
 
           <div className="flex gap-2 mb-6">

@@ -82,8 +82,8 @@ export default function ContactPage() {
               <div className="bg-accent/10 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Mail className="h-8 w-8 text-accent" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">Email</h3>
-              <p className="text-gray-600">support@taskify.com</p>
+              <h3 className="text-lg font-semibold mjobletb-2">Email</h3>
+              <p className="text-gray-600">support@joblet.ai.com</p>
             </div>
 
             <div className="card text-center">
