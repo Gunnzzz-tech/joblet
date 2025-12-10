@@ -229,7 +229,7 @@ export default function JobDetails() {
 
             {/* Apply Button */}
             <button onClick={handleApply} className="btn btn-primary w-full flex items-center justify-center gap-2">
-              Apply on External Site
+              Apply 
               <ExternalLink className="h-4 w-4" />
             </button>
           </div>

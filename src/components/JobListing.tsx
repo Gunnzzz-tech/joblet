@@ -2,7 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Search, Loader2, MapPin, Briefcase, Building2, Calendar, ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 import { JobFeedService, XmlJob } from '../lib/jobFeed';
+import JobCard from './JobCard';
 
+import { Menu, Transition } from '@headlessui/react'
 export default function JobListing() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ export default function JobListing() {
   
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 20;
+  const [sortBy, setSortBy] = useState('lastUpdated')
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -143,7 +146,7 @@ export default function JobListing() {
         <div className="flex gap-6">
           {/* Sidebar Filters */}
           <div className="w-64 flex-shrink-0">
-            <div className="bg-white rounded-lg p-6 shadow-sm">
+            <div className="bg-transparent rounded-lg p-6 shadow-sm">
               <h3 className="font-semibold text-lg mb-4">Filters</h3>
               
               <div className="space-y-6">
@@ -254,107 +257,151 @@ export default function JobListing() {
 
             {/* Jobs Header */}
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <h2 className="text-gray-900 text-2xl font-semibold">Recommended jobs</h2>
-                <span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">{filteredJobs.length}</span>
+              <div className="text-sm text-gray-600">
+                Showing {startIndex + 1}-{Math.min(endIndex, filteredJobs.length)} of {filteredJobs.length} jobs
               </div>
+              
               <div className="flex items-center gap-3">
                 <span className="text-gray-500 text-sm">Sort by:</span>
-                <span className="text-gray-900 text-sm font-medium">Last updated</span>
-                <button className="text-gray-500 hover:text-gray-900">
-                  <SlidersHorizontal className="w-5 h-5" />
-                </button>
+                
+                <Menu as="div" className="relative">
+                  <Menu.Button className="flex items-center gap-2 bg-white px-4 py-2 text-sm font-medium text-gray-900 rounded-lg border border-gray-300 hover:bg-gray-50 shadow-sm">
+                    {sortBy === 'lastUpdated' && 'Last updated'}
+                    {sortBy === 'newest' && 'Newest first'}
+                    {sortBy === 'salaryHigh' && 'Salary: High to Low'}
+                    {sortBy === 'salaryLow' && 'Salary: Low to High'}
+                    {sortBy === 'relevant' && 'Most relevant'}
+                    <ChevronDown className="w-4 h-4" />
+                  </Menu.Button>
+                  
+                  <Transition
+                    enter="transition duration-100 ease-out"
+                    enterFrom="transform scale-95 opacity-0"
+                    enterTo="transform scale-100 opacity-100"
+                    leave="transition duration-75 ease-out"
+                    leaveFrom="transform scale-100 opacity-100"
+                    leaveTo="transform scale-95 opacity-0"
+                  >
+                    <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
+                      <div className="p-2">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => setSortBy('lastUpdated')}
+                              className={`${
+                                active ? 'bg-blue-50 text-blue-600' : 'text-gray-900'
+                              } group flex w-full items-center rounded-md px-3 py-2 text-sm`}
+                            >
+                              Last updated
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => setSortBy('newest')}
+                              className={`${
+                                active ? 'bg-blue-50 text-blue-600' : 'text-gray-900'
+                              } group flex w-full items-center rounded-md px-3 py-2 text-sm`}
+                            >
+                              Newest first
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => setSortBy('salaryHigh')}
+                              className={`${
+                                active ? 'bg-blue-50 text-blue-600' : 'text-gray-900'
+                              } group flex w-full items-center rounded-md px-3 py-2 text-sm`}
+                            >
+                              Salary: High to Low
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => setSortBy('salaryLow')}
+                              className={`${
+                                active ? 'bg-blue-50 text-blue-600' : 'text-gray-900'
+                              } group flex w-full items-center rounded-md px-3 py-2 text-sm`}
+                            >
+                              Salary: Low to High
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => setSortBy('relevant')}
+                              className={`${
+                                active ? 'bg-blue-50 text-blue-600' : 'text-gray-900'
+                              } group flex w-full items-center rounded-md px-3 py-2 text-sm`}
+                            >
+                              Most relevant
+                            </button>
+                          )}
+                        </Menu.Item>
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
               </div>
             </div>
 
             {/* Jobs Content */}
-            {loading ? (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-              </div>
-            ) : filteredJobs.length === 0 ? (
-              <div className="text-center py-12 text-gray-500">
-                <p className="text-lg">No jobs found matching your filters.</p>
-                <p className="text-sm mt-2">Try adjusting your search criteria.</p>
-              </div>
-            ) : (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {currentJobs.map((job, index) => {
-                    const colors = [
-                      'from-blue-500 to-purple-600',
-                      'from-green-500 to-teal-600',
-                      'from-orange-500 to-red-600',
-                      'from-pink-500 to-rose-600',
-                      'from-indigo-500 to-blue-600',
-                      'from-yellow-500 to-orange-600',
-                      'from-cyan-500 to-blue-600',
-                      'from-purple-500 to-pink-600',
-                    ];
-                    const gradientColor = colors[index % colors.length];
-                    
-                    return (
-                      <div
-                        key={job.id}
-                        onClick={() => handleJobClick(job)}
-                        className="relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-white"
-                      >
-                        {/* Colorful gradient header */}
-                        <div className={`h-2 bg-gradient-to-r ${gradientColor}`}></div>
-                        
-                        <div className="p-5">
-                          <div className="flex items-start justify-between mb-3">
-                            <h3 className="text-lg font-bold text-gray-800 line-clamp-2 flex-1">
-                              {job.title}
-                            </h3>
-                          </div>
-                          
-                          <div className="space-y-2 text-sm mb-4">
-                            <div className="flex items-center gap-2 text-gray-700">
-                              <Building2 className="h-4 w-4 flex-shrink-0" />
-                              <span className="truncate font-medium">{job.company}</span>
-                            </div>
-                            {job.location && (
-                              <div className="flex items-center gap-2 text-gray-600">
-                                <MapPin className="h-4 w-4 flex-shrink-0" />
-                                <span className="truncate">{job.location}</span>
-                              </div>
-                            )}
-                          </div>
-                          
-                          <button className={`w-full bg-gradient-to-r ${gradientColor} hover:opacity-90 text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-200`}>
-                            View Details
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+{loading ? (
+  <div className="flex items-center justify-center py-12">
+    <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+  </div>
+) : filteredJobs.length === 0 ? (
+  <div className="text-center py-12 text-gray-500">
+    <p className="text-lg">No jobs found matching your filters.</p>
+    <p className="text-sm mt-2">Try adjusting your search criteria.</p>
+  </div>
+) : (
+  <>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {currentJobs.map((job, index) => (
+        <div
+          key={job.id}
+          onClick={() => handleJobClick(job)}
+          className="cursor-pointer"
+        >
+          <JobCard 
+            job={job}
+            index={index}
+          />
+        </div>
+      ))}
+    </div>
 
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-center gap-2 mt-8">
-                    <button
-                      onClick={() => setCurrentPage(currentPage - 1)}
-                      disabled={currentPage === 1}
-                      className="btn btn-outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Previous
-                    </button>
-                    <span className="text-sm text-gray-600">
-                      Page {currentPage} of {totalPages}
-                    </span>
-                    <button
-                      onClick={() => setCurrentPage(currentPage + 1)}
-                      disabled={currentPage >= totalPages}
-                      className="btn btn-outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Next
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
+    {/* Pagination */}
+    {totalPages > 1 && (
+      <div className="flex items-center justify-center gap-2 mt-8">
+        <button
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        <span className="text-sm text-gray-600">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage >= totalPages}
+          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </div>
+    )}
+  </>
+)}
           </div>
         </div>
       </div>

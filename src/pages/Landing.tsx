@@ -1,284 +1,582 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, MapPin, Briefcase, TrendingUp, Users, CheckCircle } from 'lucide-react';
+import { Search, Briefcase, Users, ArrowRight, Building2, Shield, Zap, Clock, Linkedin, Twitter, Facebook, Instagram } from 'lucide-react';
 import AuthModal from '../components/AuthModal';
+
 import { useAuth } from '../lib/auth-context';
+import { motion } from 'framer-motion';
+import '../styles/rocken.css';
+import SlidingBrands from '/Users/gungunbali/Downloads/ayur job/taskify_ai/src/pages/SlidingBrands.tsx';
+
+// Define the type for categorized suggestions
+interface CategoryGroup {
+  category: string;
+  roles: string[];
+}
 
 export default function LandingPage() {
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [searchLocation, setSearchLocation] = useState('');
   const [showAuthModal, setShowAuthModal] = useState(false);
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  
+  // Search functionality for role suggestions
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState<CategoryGroup[]>([]);
+  const searchBarRef = useRef<HTMLDivElement>(null);
+  
+  const roleCategories: CategoryGroup[] = [
+    {
+      category: "Technical Roles",
+      roles: [
+        "Software Engineer", 
+        "Frontend Developer", 
+        "Backend Developer", 
+        "Full Stack Developer",
+        "DevOps Engineer", 
+        "QA Engineer", 
+        "Cloud Architect", 
+        "Cybersecurity Analyst",
+        "AI/ML Engineer",
+        "Data Scientist",
+        "Mobile Developer",
+        "Systems Administrator"
+      ]
+    },
+    {
+      category: "Business & Management",
+      roles: [
+        "Product Manager",
+        "Project Manager",
+        "Business Analyst",
+        "Operations Manager",
+        "Sales Manager",
+        "Account Executive",
+        "Marketing Manager",
+        "HR Manager"
+      ]
+    },
+    {
+      category: "Design & Creative",
+      roles: [
+        "UI/UX Designer",
+        "Graphic Designer",
+        "Product Designer",
+        "Visual Designer",
+        "Motion Graphics Designer",
+        "Content Designer"
+      ]
+    },
+    {
+      category: "Data & Analytics",
+      roles: [
+        "Data Analyst",
+        "Data Engineer",
+        "Business Intelligence Analyst",
+        "Data Scientist",
+        "Machine Learning Engineer",
+        "Data Architect"
+      ]
+    },
+    {
+      category: "Customer Service",
+      roles: [
+        "Customer Support Specialist",
+        "Client Service Representative",
+        "Technical Support Engineer",
+        "Customer Success Manager",
+        "Account Manager"
+      ]
+    }
+  ];
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const params = new URLSearchParams();
-    if (searchKeyword) params.set('keyword', searchKeyword);
-    if (searchLocation) params.set('location', searchLocation);
-    navigate(`/jobs?${params.toString()}`);
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    
+    if (value.trim() === "") {
+      setSuggestions([]);
+      return;
+    }
+  
+    const filteredCategories = roleCategories.map(category => ({
+      category: category.category,
+      roles: category.roles.filter(role => 
+        role.toLowerCase().includes(value.toLowerCase())
+      )
+    })).filter(category => category.roles.length > 0);
+  
+    setSuggestions(filteredCategories);
+  };
+  
+  const handleSearchFocus = () => {
+    // Show all categories with their roles when focused
+    setSuggestions(roleCategories);
+  };
+  
+  const handleRoleSelect = (role: string) => {
+    setSearchTerm(role);
+    setSuggestions([]);
+    navigate(`/jobs?keyword=${encodeURIComponent(role)}`);
+  };
+  
+  const handleClickOutside = (event: MouseEvent) => {
+    if (searchBarRef.current && !searchBarRef.current.contains(event.target as Node)) {
+      setSuggestions([]);
+    }
+  };
+  
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleFindJob = () => {
+    if (searchTerm) {
+      navigate(`/jobs?keyword=${encodeURIComponent(searchTerm)}`);
+    } else {
+      navigate("/jobs");
+    }
+  };
+
+  // Create smooth wave path - same for all layers
+  const createWavePath = (index: number, totalBars: number) => {
+    const progress = index / totalBars;
+    // Smoother S-curve with more spread at the beginning
+    const waveX = Math.sin(progress * Math.PI * 1.8) * 220 + (progress < 0.3 ? (1 - progress / 0.3) * 120 : 0);
+    const yPos = index * 65;
+    const rotation = -52 + Math.sin(progress * Math.PI * 1.5) * 18;
+    
+    return { waveX, yPos, rotation };
   };
 
   return (
-    <div>
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary via-primary-dark to-primary py-20 text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Find Your Dream Job Today
-            </h1>
-            <p className="text-xl mb-8 text-gray-200">
-              Connect with top employers and discover opportunities that match your skills and aspirations.
-            </p>
+    <>
+    
+      <div className="isolate">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex flex-col">
+        {/* NEW HERO SECTION */}
+        <section className="relative min-h-[100vh] flex items-center px-6 md:px-8 pt-32 md:pt-40 pb-40">
+          <div className="max-w-7xl mx-auto w-full relative">
+            {/* Left Content */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="relative z-10 max-w-2xl"
+            >
+              <h1 className="mb-8">
+                <span className="block text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight">The Leading Platform</span>
+                <span className="block text-4xl md:text-5xl lg:text-5xl font-bold text-gray-600 leading-tight tracking-tight">for Your Next Career Move</span>
+              </h1>
+              
+              <p className="text-gray-600 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
+                Connecting <span className="font-semibold text-blue-600">talented professionals</span> with career opportunities across industries.
+              </p>
 
-            {/* Search Bar */}
-            <form onSubmit={handleSearch} className="bg-white rounded-lg p-2 shadow-xl flex flex-col md:flex-row gap-2">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <input
-                  type="text"
-                  value={searchKeyword}
-                  onChange={(e) => setSearchKeyword(e.target.value)}
-                  placeholder="Job title, keywords, or company"
-                  className="w-full pl-10 pr-4 py-3 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
-                />
-              </div>
-              <div className="flex-1 relative">
-                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <input
-                  type="text"
-                  value={searchLocation}
-                  onChange={(e) => setSearchLocation(e.target.value)}
-                  placeholder="Location or Remote"
-                  className="w-full pl-10 pr-4 py-3 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-accent"
-                />
-              </div>
-              <button type="submit" className="btn btn-accent px-8 py-3">
-                Search Jobs
-              </button>
-            </form>
-
-            {/* Quick Filters */}
-            <div className="flex flex-wrap justify-center gap-3 mt-6">
-              <Link
-                to="/jobs?workSchedule=FULL_TIME"
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-md text-sm font-medium transition-colors"
-              >
-                Full-time
-              </Link>
-              <Link
-                to="/jobs?employment=REMOTE"
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-md text-sm font-medium transition-colors"
-              >
-                Remote
-              </Link>
-              <Link
-                to="/jobs?category=Technology"
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-md text-sm font-medium transition-colors"
-              >
-                Tech
-              </Link>
-              <Link
-                to="/jobs?category=Design"
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-md text-sm font-medium transition-colors"
-              >
-                Design
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Trusted By Section */}
-      <section className="py-12 bg-gray-50 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <p className="text-center text-gray-600 mb-8 font-medium">Trusted by Companies</p>
-          <div className="relative">
-            <style>{`
-              @keyframes scroll {
-                0% {
-                  transform: translateX(0);
-                }
-                100% {
-                  transform: translateX(-50%);
-                }
-              }
-              .animate-scroll {
-                animation: scroll 25s linear infinite;
-              }
-              .animate-scroll:hover {
-                animation-play-state: paused;
-              }
-            `}</style>
-            <div className="flex animate-scroll whitespace-nowrap">
-              {[...Array(2)].map((_, setIndex) => (
-                <div key={setIndex} className="flex items-center gap-16 shrink-0">
-                  <div className="w-32 h-16 flex items-center justify-center">
-                    <img src="/src/images/uber.png" alt="Uber" className="max-h-12 max-w-full object-contain grayscale hover:grayscale-0 transition-all" />
-                  </div>
-                  <div className="w-32 h-16 flex items-center justify-center">
-                    <img src="/src/images/jet.png" alt="Jet" className="max-h-12 max-w-full object-contain grayscale hover:grayscale-0 transition-all" />
-                  </div>
-                  <div className="w-32 h-16 flex items-center justify-center">
-                    <img src="/src/images/mercor.png" alt="Mercor" className="max-h-12 max-w-full object-contain grayscale hover:grayscale-0 transition-all" />
-                  </div>
-                  <div className="w-32 h-16 flex items-center justify-center">
-                    <img src="/src/images/scale.png" alt="Scale" className="max-h-12 max-w-full object-contain grayscale hover:grayscale-0 transition-all" />
-                  </div>
-                  <div className="w-32 h-16 flex items-center justify-center">
-                    <img src="/src/images/wf.png" alt="WF" className="max-h-12 max-w-full object-contain grayscale hover:grayscale-0 transition-all" />
-                  </div>
-                  <div className="w-32 h-16 flex items-center justify-center">
-                    <img src="/src/images/download.jpeg" alt="Company" className="max-h-12 max-w-full object-contain grayscale hover:grayscale-0 transition-all" />
-                  </div>
+              {/* Search Bar with Suggestions */}
+              <div className="relative max-w-xl mb-20" ref={searchBarRef}>
+                <div className="flex items-center gap-3 bg-white border border-gray-200 rounded-full px-6 py-4 shadow-sm hover:shadow-md transition-shadow">
+                  <Search className="size-6 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search roles..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    onFocus={handleSearchFocus}
+                    className="flex-1 bg-transparent border-none outline-none text-gray-700 placeholder:text-gray-400 text-lg"
+                  />
+                  <button
+                    onClick={handleFindJob}
+                    className="bg-blue-600 hover:bg-blue-700 rounded-full p-2 shrink-0 transition-colors"
+                  >
+                    <ArrowRight className="size-6 text-white" />
+                  </button>
                 </div>
-              ))}
+                
+                {/* Suggestions Dropdown */}
+                {suggestions.length > 0 && (
+                  <div 
+                    className="absolute top-full left-0 bg-white border border-gray-200 rounded-xl shadow-xl mt-2 z-50 custom-scrollbar"
+                    style={{ width: '100%', maxHeight: '400px', overflowY: 'auto' }}
+                  >
+                    {suggestions.map((categoryGroup) => (
+                      <div key={categoryGroup.category}>
+                        <div className="px-6 py-4 bg-gray-100 sticky top-0">
+                          <h3 className="font-bold text-gray-900 text-sm uppercase tracking-wide">
+                            {categoryGroup.category}
+                          </h3>
+                        </div>
+                        
+                        <div className="pb-2">
+                          {categoryGroup.roles.map((role) => (
+                            <div
+                              key={role}
+                              className="px-6 py-3 hover:bg-blue-50 cursor-pointer transition-colors duration-150 border-b border-gray-100 last:border-b-0"
+                              onClick={() => handleRoleSelect(role)}
+                            >
+                              <span className="text-gray-700 text-base">{role}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Wavy Blue Glass Bars Structure - Right side */}
+            <div className="absolute w-250px h-[1000px] pointer-events-none hidden lg:block" style={{ right: '-200px', top: '-100px' }}>
+              {/* Layer 1 - Back darker bars */}
+              {Array.from({ length: 18 }).map((_, i) => {
+                const { waveX, yPos, rotation } = createWavePath(i, 18);
+                
+                return (
+                  <motion.div
+                    key={`layer1-${i}`}
+                    className="absolute"
+                    initial={{ 
+                      opacity: 0,
+                      scale: 0.8,
+                      rotateZ: rotation - 15
+                    }}
+                    animate={{ 
+                      opacity: 1,
+                      scale: 1,
+                      rotateZ: rotation,
+                      x: [0, -3, 0],
+                      y: [0, 2, 0]
+                    }}
+                    transition={{
+                      duration: 1.2,
+                      delay: i * 0.05,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    style={{
+                      top: `${yPos}px`,
+                      right: `${waveX}px`,
+                      width: '450px',
+                      height: '70px',
+                      background: 'linear-gradient(to right, rgba(59, 130, 246, 0.75), rgba(96, 165, 250, 0.65))',
+                      borderRadius: '10px',
+                      border: '1px solid rgba(59, 130, 246, 0.4)',
+                      boxShadow: `
+                        inset 0 2px 20px rgba(255, 255, 255, 0.25),
+                        0 4px 20px rgba(59, 130, 246, 0.3),
+                        0 8px 35px rgba(59, 130, 246, 0.2)
+                      `,
+                    }}
+                  >
+                    <div 
+                      className="absolute inset-0 rounded-lg"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%)'
+                      }}
+                    />
+                  </motion.div>
+                );
+              })}
+
+              {/* Layer 2 - Middle lighter bars */}
+              {Array.from({ length: 18 }).map((_, i) => {
+                const { waveX, yPos, rotation } = createWavePath(i, 18);
+                
+                return (
+                  <motion.div
+                    key={`layer2-${i}`}
+                    className="absolute"
+                    initial={{ 
+                      opacity: 0,
+                      scale: 0.8,
+                      rotateZ: rotation - 15
+                    }}
+                    animate={{ 
+                      opacity: 1,
+                      scale: 1,
+                      rotateZ: rotation,
+                      x: [0, -4, 0],
+                      y: [0, -2, 0]
+                    }}
+                    transition={{
+                      duration: 1.2,
+                      delay: 0.15 + i * 0.05,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    style={{
+                      top: `${yPos + 12}px`,
+                      right: `${waveX + 50}px`,
+                      width: '430px',
+                      height: '68px',
+                      background: 'linear-gradient(to right, rgba(96, 165, 250, 0.82), rgba(147, 197, 253, 0.72))',
+                      borderRadius: '10px',
+                      border: '1px solid rgba(96, 165, 250, 0.5)',
+                      boxShadow: `
+                        inset 0 2px 22px rgba(255, 255, 255, 0.35),
+                        0 4px 22px rgba(96, 165, 250, 0.38),
+                        0 8px 40px rgba(96, 165, 250, 0.25)
+                      `,
+                    }}
+                  >
+                    <div 
+                      className="absolute inset-0 rounded-lg"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, transparent 55%)'
+                      }}
+                    />
+                  </motion.div>
+                );
+              })}
+
+              {/* Layer 3 - Front lightest bars */}
+              {Array.from({ length: 18 }).map((_, i) => {
+                const { waveX, yPos, rotation } = createWavePath(i, 18);
+                
+                return (
+                  <motion.div
+                    key={`layer3-${i}`}
+                    className="absolute"
+                    initial={{ 
+                      opacity: 0,
+                      scale: 0.8,
+                      rotateZ: rotation - 15
+                    }}
+                    animate={{ 
+                      opacity: 1,
+                      scale: 1,
+                      rotateZ: rotation,
+                      x: [0, -5, 0],
+                      y: [0, 3, 0]
+                    }}
+                    transition={{
+                      duration: 1.2,
+                      delay: 0.3 + i * 0.05,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    style={{
+                      top: `${yPos + 24}px`,
+                      right: `${waveX + 100}px`,
+                      width: '410px',
+                      height: '66px',
+                      background: 'linear-gradient(to right, rgba(147, 197, 253, 0.88), rgba(191, 219, 254, 0.78))',
+                      borderRadius: '10px',
+                      border: '1px solid rgba(147, 197, 253, 0.6)',
+                      boxShadow: `
+                        inset 0 2px 25px rgba(255, 255, 255, 0.45),
+                        0 4px 25px rgba(147, 197, 253, 0.48),
+                        0 8px 45px rgba(147, 197, 253, 0.3)
+                      `,
+                    }}
+                  >
+                    <div 
+                      className="absolute inset-0 rounded-lg"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 40%, transparent 65%)'
+                      }}
+                    />
+                    <div 
+                      className="absolute bottom-0 left-0 right-0 h-4 rounded-b-lg"
+                      style={{
+                        background: 'linear-gradient(to top, rgba(59, 130, 246, 0.3), transparent)'
+                      }}
+                    />
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* How It Works */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-primary">How It Works</h2>
+        
+        {/* Brands Slider Section */}
+        <SlidingBrands small="Trusted by" title="Industry Leaders" />
+
+        {/* Blue & White Collar Categories Section */}
+        <section className="relative py-24 px-8"> {/* Removed bg-gradient */}
+  <div className="max-w-6xl mx-auto">
+    <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+      {/* Blue Collar Card - Keep as is */}
+      <motion.div
+        initial={{ opacity: 0, x: -30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="group cursor-pointer"
+        onClick={() => navigate("/jobs?category=Manufacturing")}
+      >
+        <div className="relative overflow-hidden rounded-3xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 h-full">
+          <div className="relative h-64 overflow-hidden bg-gradient-to-br from-blue-600 to-blue-400">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Briefcase className="size-32 text-white/30" />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="text-center">
-              <div className="bg-accent/10 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Search className="h-8 w-8 text-accent" />
+          <div className="p-8">
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <h3 className="text-3xl font-bold text-gray-900">Blue Collar</h3>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Search Jobs</h3>
-              <p className="text-gray-600">
-                Use advanced filters to find jobs that match your skills, location, and preferences.
-              </p>
-            </div>
             
-            <div className="text-center">
-              <div className="bg-accent/10 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Briefcase className="h-8 w-8 text-accent" />
+              <div className="flex flex-wrap gap-2 mb-6 justify-center">
+                <span className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">Construction</span>
+                <span className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">Manufacturing</span>
+                <span className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">Logistics</span>
+                <span className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">Maintenance</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Apply Easily</h3>
-              <p className="text-gray-600">
-                Submit your application with a cover letter and resume in just a few clicks.
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="bg-accent/10 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="h-8 w-8 text-accent" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Grow Your Career</h3>
-              <p className="text-gray-600">
-                Track your applications and get matched with opportunities that fit your goals.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto items-center">
-            <div>
-              <h2 className="text-3xl font-bold mb-6 text-primary">
-                Everything you need to find your next opportunity
-              </h2>
-              <div className="space-y-4">
-                {[
-                  'Advanced search and filtering',
-                  'Real-time job matching',
-                  'Easy application process',
-                  'Application tracking',
-                  'Company profiles and reviews',
-                  'Email notifications',
-                ].map((feature) => (
-                  <div key={feature} className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-success flex-shrink-0" />
-                    <span className="text-gray-700">{feature}</span>
-                  </div>
-                ))}
-              </div>
-              {!isAuthenticated && (
-                <button
-                  onClick={() => setShowAuthModal(true)}
-                  className="mt-6 btn btn-primary"
-                >
-                  Get Started Free
-                </button>
-              )}
-            </div>
-            <div className="bg-gradient-to-br from-accent/10 to-primary/10 rounded-lg p-8">
-              <div className="space-y-4">
-                <div className="bg-white p-4 rounded-lg shadow">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-12 h-12 bg-accent/20 rounded-lg"></div>
-                    <div>
-                      <div className="font-semibold">Senior UI/UX Designer</div>
-                      <div className="text-sm text-gray-600">TechCorp • San Francisco</div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 mt-2">
-                    <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Remote</span>
-                    <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Full-time</span>
-                  </div>
-                </div>
-                <div className="bg-white p-4 rounded-lg shadow">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-12 h-12 bg-accent/20 rounded-lg"></div>
-                    <div>
-                      <div className="font-semibold">Full Stack Developer</div>
-                      <div className="text-sm text-gray-600">StartupHub • New York</div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 mt-2">
-                    <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded">Hybrid</span>
-                    <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">Full-time</span>
-                  </div>
-                </div>
+              
+              <div className="flex items-center justify-center text-gray-800 font-semibold group-hover:gap-3 gap-2 transition-all">
+                Explore Roles
+                <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </motion.div>
 
-      {/* CTA Section */}
-      <section className="py-16 bg-primary text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to find your dream job?</h2>
-          <p className="text-xl mb-8 text-gray-200">
-            Join thousands of job seekers and employers on Taskify today.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {!isAuthenticated ? (
-              <>
-                <button
-                  onClick={() => setShowAuthModal(true)}
-                  className="btn bg-white text-primary hover:bg-gray-100"
-                >
-                  Sign Up Free
-                </button>
-                <Link to="/jobs" className="btn btn-outline-primary border-white text-white hover:bg-white/10">
+      {/* White Collar Card - Keep as is */}
+      <motion.div
+        initial={{ opacity: 0, x: 30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="group cursor-pointer"
+        onClick={() => navigate("/jobs?category=Technology")}
+      >
+        <div className="relative overflow-hidden rounded-3xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 h-full">
+          <div className="relative h-64 overflow-hidden bg-gradient-to-br from-gray-800 to-gray-600">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Building2 className="size-32 text-white/30" />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+          </div>
+          
+          <div className="p-8">
+            <div className="flex flex-col items-center text-center">
+              <div className="flex items-center gap-3 mb-4">
+                <h3 className="text-3xl font-bold text-gray-700">White Collar</h3>
+              </div>
+              
+              <div className="flex flex-wrap gap-2 mb-6 justify-center">
+                <span className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">Technology</span>
+                <span className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">Finance</span>
+                <span className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">Management</span>
+                <span className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">Creative</span>
+              </div>
+              
+              <div className="flex items-center justify-center text-gray-900 font-semibold group-hover:gap-3 gap-2 transition-all">
+                Explore Roles
+                <ArrowRight className="size-5 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  </div>
+</section>
+
+        {/* Features Section */}
+        <section id="features" className="features-section">
+          <div className="text-center mb-24">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Comprehensive solutions for both job seekers and employers
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Everything you need to find your next opportunity or build your team
+            </p>
+          </div>
+          
+          <div className="features-grid">
+            <div className="feature-card">
+              <div className="feature-icon">
+                <Briefcase className="text-white size-7" />
+              </div>
+              <h3 className="feature-title">Verified Job Listings</h3>
+              <p className="feature-description">All jobs are verified and vetted to ensure genuine opportunities for workers.</p>
+            </div>
+
+            <div className="feature-card">
+              <div className="feature-icon">
+                <Users className="text-white size-7" />
+              </div>
+              <h3 className="feature-title">Skilled Workforce</h3>
+              <p className="feature-description">Access to millions of pre-verified skilled workers across various trades.</p>
+            </div>
+
+            <div className="feature-card">
+              <div className="feature-icon">
+                <Building2 className="text-white size-7" />
+              </div>
+              <h3 className="feature-title">Top Companies</h3>
+              <p className="feature-description">Partner with leading companies looking for reliable talent.</p>
+            </div>
+
+            <div className="feature-card">
+              <div className="feature-icon">
+                <Shield className="text-white size-7" />
+              </div>
+              <h3 className="feature-title">Safe & Secure</h3>
+              <p className="feature-description">Your data is protected with enterprise-grade security measures.</p>
+            </div>
+
+            <div className="feature-card">
+              <div className="feature-icon">
+                <Zap className="text-white size-7" />
+              </div>
+              <h3 className="feature-title">AI-Powered Matching</h3>
+              <p className="feature-description">Smart algorithms match candidates with the most suitable job opportunities.</p>
+            </div>
+
+            <div className="feature-card">
+              <div className="feature-icon">
+                <Clock className="text-white size-7" />
+              </div>
+              <h3 className="feature-title">Quick Hiring</h3>
+              <p className="feature-description">Streamlined process enables faster hiring and onboarding of workers.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-16 bg-gradient-to-br from-gray-800 to-gray-800 text-white">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold mb-4">Ready to find your dream job?</h2>
+            <p className="text-xl mb-8 text-blue-100">
+              Join thousands of job seekers and employers on Taskify today.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              {!isAuthenticated ? (
+                <>
+                  <button
+                    onClick={() => setShowAuthModal(true)}
+                    className="px-8 py-3 bg-white text-gray-700 hover:bg-gray-300 rounded-lg font-semibold transition-colors"
+                  >
+                    Sign Up Free
+                  </button>
+                  <Link to="/jobs" className="px-8 py-3 border-2 border-white text-white hover:bg-white/10 rounded-lg font-semibold transition-colors">
+                    Browse Jobs
+                  </Link>
+                </>
+              ) : (
+                <Link to="/jobs" className="px-8 py-3 bg-white text-blue-600 hover:bg-gray-100 rounded-lg font-semibold transition-colors">
                   Browse Jobs
                 </Link>
-              </>
-            ) : (
-              <Link to="/jobs" className="btn bg-white text-primary hover:bg-gray-100">
-                Browse Jobs
-              </Link>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        initialMode="register"
-      />
-    </div>
+        
+        </div>
+
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          initialMode="register"
+        />
+      </div>
+    </>
   );
 }
-
